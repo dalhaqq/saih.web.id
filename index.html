@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abdalhaqq — Backend Developer</title>
+  <meta name="description" content="Backend Developer based in Jakarta. Node.js, Go, PHP, PostgreSQL. Shopee & TikTok integrations. Open to freelance." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:         oklch(96.5% 0.010 75);
+      --bg-subtle:  oklch(93%   0.014 75);
+      --ink:        oklch(13%   0.020 55);
+      --ink-mid:    oklch(38%   0.018 55);
+      --ink-muted:  oklch(52%   0.015 60);
+      --ink-faint:  oklch(72%   0.012 65);
+      --rule:       oklch(84%   0.012 70);
+      --accent:     oklch(51%   0.180 42);
+      --accent-bg:  oklch(92%   0.040 55);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ───────────────────────────────────────────── */
+    #nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px clamp(24px, 6vw, 80px);
+      transition: background 0.35s, border-color 0.35s;
+      border-bottom: 1px solid transparent;
+    }
+
+    #nav.scrolled {
+      background: color-mix(in oklch, var(--bg) 88%, transparent);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-color: var(--rule);
+    }
+
+    .nav-brand {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: clamp(20px, 3.5vw, 48px);
+    }
+
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ─── LAYOUT ─────────────────────────────────────────── */
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 clamp(24px, 6vw, 80px);
+    }
+
+    section {
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .section-inner {
+      padding: clamp(72px, 10vw, 128px) 0;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      margin-bottom: clamp(48px, 7vw, 88px);
+    }
+
+    .section-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-faint);
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(34px, 5.5vw, 60px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    #hero {
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .hero-inner {
+      padding: clamp(120px, 16vw, 180px) 0 clamp(72px, 10vw, 112px);
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 48px;
+      align-items: end;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.73rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(58px, 10vw, 134px);
+      font-weight: 900;
+      line-height: 0.91;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-role {
+      margin-top: 28px;
+      font-size: clamp(15px, 1.6vw, 19px);
+      font-weight: 300;
+      color: var(--ink-muted);
+      max-width: 460px;
+      line-height: 1.65;
+    }
+
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 24px;
+      padding-bottom: 4px;
+    }
+
+    .badge-avail {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: blink 2.2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.35; }
+    }
+
+    .hero-location {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.07em;
+      text-align: right;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    /* ─── BUTTONS ─────────────────────────────────────────── */
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 12px 26px;
+      transition: background 0.22s, color 0.22s, border-color 0.22s;
+      white-space: nowrap;
+    }
+
+    .btn-fill {
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .btn-fill:hover { background: var(--accent); }
+
+    .btn-outline {
+      border: 1px solid var(--rule);
+      color: var(--ink-muted);
+    }
+    .btn-outline:hover {
+      border-color: var(--ink-mid);
+      color: var(--ink);
+    }
+
+    /* ─── ABOUT ───────────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(48px, 7vw, 100px);
+    }
+
+    .about-body p {
+      font-size: clamp(15px, 1.4vw, 18px);
+      line-height: 1.8;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .about-body p:last-child { margin-bottom: 0; }
+
+    .differentiators {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .diff-item {
+      padding-left: 18px;
+      border-left: 2px solid var(--accent);
+    }
+
+    .diff-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 5px;
+    }
+
+    .diff-text {
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+      line-height: 1.65;
+    }
+
+    /* ─── EXPERIENCE ──────────────────────────────────────── */
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 188px 1fr;
+      gap: 44px;
+      padding: 36px 0;
+      border-top: 1px solid var(--rule);
+    }
+    .exp-item:last-child { border-bottom: 1px solid var(--rule); }
+
+    .exp-meta {
+      padding-top: 3px;
+    }
+
+    .exp-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.73rem;
+      color: var(--ink-muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+
+    .exp-type-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-faint);
+    }
+
+    .exp-company {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(18px, 2.4vw, 26px);
+      font-weight: 700;
+      margin-bottom: 3px;
+      line-height: 1.15;
+    }
+
+    .exp-role {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      margin-bottom: 14px;
+    }
+
+    .exp-desc {
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+      line-height: 1.72;
+      margin-bottom: 14px;
+    }
+
+    .exp-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+
+    .exp-bullet {
+      display: flex;
+      gap: 10px;
+      font-size: 0.84rem;
+      color: var(--ink-mid);
+      line-height: 1.55;
+    }
+
+    .exp-bullet::before {
+      content: '—';
+      color: var(--accent);
+      flex-shrink: 0;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      padding: 3px 9px;
+      background: var(--bg-subtle);
+      color: var(--ink-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── PROJECTS ────────────────────────────────────────── */
+    .project-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-item {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 60px;
+      padding: 40px 0;
+      border-top: 1px solid var(--rule);
+      align-items: start;
+    }
+    .project-item:last-child { border-bottom: 1px solid var(--rule); }
+
+    .project-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 3.2vw, 38px);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .project-desc {
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+      line-height: 1.75;
+      max-width: 540px;
+    }
+
+    .project-side {
+      padding-top: 4px;
+    }
+
+    .project-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.82rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+    .project-link:hover { text-decoration: underline; }
+
+    /* ─── SKILLS ──────────────────────────────────────────── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 40px 64px;
+    }
+
+    .skill-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .skill-items {
+      font-size: 0.93rem;
+      color: var(--ink-muted);
+      line-height: 2.05;
+    }
+
+    /* ─── CONTACT ─────────────────────────────────────────── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(42px, 7vw, 84px);
+      font-weight: 900;
+      line-height: 0.94;
+      letter-spacing: -0.025em;
+    }
+
+    .contact-heading em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .contact-sub {
+      margin-top: 24px;
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+      line-height: 1.7;
+      max-width: 360px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      padding-top: 6px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .contact-row:first-child { border-top: 1px solid var(--rule); }
+
+    .contact-row-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      width: 80px;
+      flex-shrink: 0;
+    }
+
+    .contact-row-val {
+      font-size: 0.93rem;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .contact-row-val:hover { color: var(--accent); }
+
+    /* ─── FOOTER ──────────────────────────────────────────── */
+    footer {
+      padding: 28px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── REVEAL ANIMATION ────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.08s; }
+    .reveal-delay-2 { transition-delay: 0.16s; }
+    .reveal-delay-3 { transition-delay: 0.24s; }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        padding-bottom: clamp(56px, 8vw, 80px);
+      }
+      .hero-right {
+        align-items: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      .hero-location { text-align: left; }
+      .hero-actions {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+      .about-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+      .exp-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .exp-meta { display: flex; gap: 16px; align-items: baseline; }
+      .project-item {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .nav-links { display: none; }
+      .hero-name { letter-spacing: -0.03em; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ──────────────────────────────────────────────── -->
+<nav id="nav">
+  <a href="#hero" class="nav-brand">saih.web.id</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ─── HERO ──────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <p class="hero-eyebrow">Backend Developer &nbsp;·&nbsp; Jakarta, Indonesia</p>
+        <h1 class="hero-name">
+          Abdalhaqq<br>
+          Muhammad<br><em>Saih</em>
+        </h1>
+        <p class="hero-role">
+          Building scalable APIs and backend systems — marketplace integrations,
+          enterprise ERP, and database-intensive services. 3+ years across
+          Node.js, Go, and PHP.
+        </p>
+      </div>
+      <div class="hero-right">
+        <span class="badge-avail">
+          <span class="badge-dot"></span>Open to freelance
+        </span>
+        <p class="hero-location">South Jakarta<br>Indonesia</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-fill">Get in touch</a>
+          <a href="https://github.com/dalhaqq" target="_blank" rel="noopener" class="btn btn-outline">GitHub ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─────────────────────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <div class="section-inner">
+      <div class="section-label reveal">
+        <span class="section-num">01</span>
+        <h2 class="section-title">About</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-body reveal">
+          <p>
+            I'm a backend developer based in Jakarta with 3+ years of experience
+            designing and shipping production-grade APIs and web systems. My work
+            spans startups, enterprise ERP implementations, and freelance projects —
+            giving me a complete picture of how software gets built, tested, and maintained.
+          </p>
+          <p>
+            Most recently, I've been building <strong>Siglive</strong> at Paragon —
+            a live commerce management system powering 13+ major beauty brands
+            (Wardah, Make Over, Emina, Kahf, and more) across TikTok and Shopee.
+            Before that, I led QA engineering on two SAP-to-Odoo ERP migrations,
+            which sharpened my eye for testability and edge cases.
+          </p>
+          <p>
+            I'm open to freelance backend projects and full-time opportunities —
+            especially around REST API development, marketplace integrations, and
+            database-heavy systems.
+          </p>
+        </div>
+        <div class="differentiators reveal reveal-delay-1">
+          <div class="diff-item">
+            <p class="diff-label">Marketplace APIs</p>
+            <p class="diff-text">Production experience integrating Shopee and TikTok Live APIs — uncommon in the Indonesian backend market.</p>
+          </div>
+          <div class="diff-item">
+            <p class="diff-label">QA Background</p>
+            <p class="diff-text">A year as a QA engineer means I write backend code with testability and reliability built in, not bolted on.</p>
+          </div>
+          <div class="diff-item">
+            <p class="diff-label">Production Scale</p>
+            <p class="diff-text">Systems I've shipped have served 20,000+ users across Paragon's 13+ brand portfolio.</p>
+          </div>
+          <div class="diff-item">
+            <p class="diff-label">Hybrid Search</p>
+            <p class="diff-text">Hands-on with pgvector and full-text search combined via Reciprocal Rank Fusion — thesis project and live implementation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── EXPERIENCE ────────────────────────────────────────── -->
+<section id="experience">
+  <div class="container">
+    <div class="section-inner">
+      <div class="section-label reveal">
+        <span class="section-num">02</span>
+        <h2 class="section-title">Experience</h2>
+      </div>
+      <div class="exp-list">
+
+        <div class="exp-item reveal">
+          <div class="exp-meta">
+            <p class="exp-period">Nov 2025 — Present</p>
+            <p class="exp-type-tag">Contract</p>
+          </div>
+          <div>
+            <h3 class="exp-company">ParagonCorp</h3>
+            <p class="exp-role">Backend Developer · via PT Flitts Magista Indonesia</p>
+            <p class="exp-desc">
+              Building Siglive — an internal live commerce management system serving 13+ Paragon beauty brands on TikTok and Shopee. Handles host attendance, live session monitoring, host assistance, and promotional stock tracking across all brands.
+            </p>
+            <div class="exp-bullets">
+              <span class="exp-bullet">REST APIs using Node.js (Express) + PostgreSQL (Sequelize) for live session and host management</span>
+              <span class="exp-bullet">Shopee livestream integration for real-time comment monitoring during live sessions</span>
+              <span class="exp-bullet">Refactored Jest suite across 6+ modules — decomposed a 931-line monolith into focused, maintainable specs</span>
+              <span class="exp-bullet">Added test coverage for previously untested services: webSocket, brandSummary, hostSummaryV3</span>
+            </div>
+            <div class="tag-row">
+              <span class="tag">Node.js</span>
+              <span class="tag">Express</span>
+              <span class="tag">PostgreSQL</span>
+              <span class="tag">Sequelize</span>
+              <span class="tag">Jest</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">Shopee API</span>
+              <span class="tag">TikTok API</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-item reveal">
+          <div class="exp-meta">
+            <p class="exp-period">Jun 2024 — Jan 2026</p>
+            <p class="exp-type-tag">Contract · 1 yr 7 mos</p>
+          </div>
+          <div>
+            <h3 class="exp-company">KeDA Tech</h3>
+            <p class="exp-role">Quality Assurance Engineer</p>
+            <p class="exp-desc">
+              QA engineer across two enterprise Odoo ERP implementations. Sumber Harapan Nusakencana (Toyota dealership) and Citra Kreasi Makmur (Tefal &amp; Turbo distributor), where the work involved a SAP-to-Odoo migration. Built automated test tooling from scratch on both projects.
+            </p>
+            <div class="exp-bullets">
+              <span class="exp-bullet">Toyota dealership: tested 7+ Odoo modules, built UAT tool that reads Excel test cases and auto-organizes screenshots</span>
+              <span class="exp-bullet">CKM: built web comparison tool to detect discrepancies between SAP and Odoo report output</span>
+              <span class="exp-bullet">CKM: initiated Maestro mobile automation for field sales app — login, supervisor takeover, sales reports</span>
+              <span class="exp-bullet">Added Selenium web automation alongside mobile coverage</span>
+            </div>
+            <div class="tag-row">
+              <span class="tag">Katalon</span>
+              <span class="tag">Selenium</span>
+              <span class="tag">Maestro</span>
+              <span class="tag">Odoo</span>
+              <span class="tag">Python</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-item reveal">
+          <div class="exp-meta">
+            <p class="exp-period">Sep 2024 — Present</p>
+            <p class="exp-type-tag">Freelance</p>
+          </div>
+          <div>
+            <h3 class="exp-company">Freelance Backend</h3>
+            <p class="exp-role">Backend Developer</p>
+            <p class="exp-desc">
+              Independent backend work running in parallel with full-time roles. Two active projects: a Go-based printing service management system and a PHP/PostgreSQL REST API for a meditation mobile app.
+            </p>
+            <div class="exp-bullets">
+              <span class="exp-bullet">Printing service: order management, operator task distribution, inventory tracking — Go + PostgreSQL</span>
+              <span class="exp-bullet">Meditation app: user management, progress tracking, session handling, S3-compatible content storage — PHP + PostgreSQL</span>
+            </div>
+            <div class="tag-row">
+              <span class="tag">Go</span>
+              <span class="tag">PHP</span>
+              <span class="tag">PostgreSQL</span>
+              <span class="tag">REST API</span>
+              <span class="tag">S3</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-item reveal">
+          <div class="exp-meta">
+            <p class="exp-period">Mar 2023 — Aug 2024</p>
+            <p class="exp-type-tag">Contract · Remote</p>
+          </div>
+          <div>
+            <h3 class="exp-company">PT Cybers Blitz Nusantara</h3>
+            <p class="exp-role">Software Engineer</p>
+            <p class="exp-desc">
+              Built and maintained web applications serving 20,000+ users using PHP and PostgreSQL. Notable achievement: reduced Excel export from 30+ seconds to under 1 second by bypassing library overhead and generating XLSX XML directly.
+            </p>
+            <div class="exp-bullets">
+              <span class="exp-bullet">30s → &lt;1s Excel export via direct XML generation — no library overhead</span>
+              <span class="exp-bullet">Complex relational DB design for peer-to-peer employee appraisal workflows</span>
+              <span class="exp-bullet">Business trip management system with automated multi-step approval workflows</span>
+            </div>
+            <div class="tag-row">
+              <span class="tag">PHP</span>
+              <span class="tag">PostgreSQL</span>
+              <span class="tag">MySQL</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-item reveal">
+          <div class="exp-meta">
+            <p class="exp-period">Apr 2022 — Feb 2023</p>
+            <p class="exp-type-tag">Freelance · 11 mos</p>
+          </div>
+          <div>
+            <h3 class="exp-company">Freelance Programmer</h3>
+            <p class="exp-role">Full-stack & Mobile Developer</p>
+            <p class="exp-desc">
+              Built and deployed 10+ web and mobile applications. Clients included a regional government office (financial reporting) and various SMEs. Delivered cross-platform mobile apps and a C++ puzzle game in one week.
+            </p>
+            <div class="exp-bullets">
+              <span class="exp-bullet">Financial reporting system for regional government — real-time budget tracking and multi-level approval</span>
+              <span class="exp-bullet">Cross-platform mobile apps using Flutter, Ionic, and Jetpack Compose</span>
+              <span class="exp-bullet">C++ puzzle game using Sigil library — delivered within one week</span>
+            </div>
+            <div class="tag-row">
+              <span class="tag">Laravel</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">Flutter</span>
+              <span class="tag">Ionic</span>
+              <span class="tag">Jetpack Compose</span>
+              <span class="tag">MySQL</span>
+              <span class="tag">PostgreSQL</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROJECTS ──────────────────────────────────────────── -->
+<section id="projects">
+  <div class="container">
+    <div class="section-inner">
+      <div class="section-label reveal">
+        <span class="section-num">03</span>
+        <h2 class="section-title">Projects</h2>
+      </div>
+      <div class="project-list">
+
+        <div class="project-item reveal">
+          <div>
+            <h3 class="project-name">photo-ai</h3>
+            <p class="project-desc">
+              Fully offline AI photo management system. Semantic search via CLIP, face recognition via InsightFace, automatic captions via BLIP, smart album clustering via HDBSCAN, duplicate detection, GPS map view, and timeline — all running on-device with zero cloud dependency.
+            </p>
+            <div class="tag-row" style="margin-top: 16px;">
+              <span class="tag">Python</span>
+              <span class="tag">FastAPI</span>
+              <span class="tag">CLIP</span>
+              <span class="tag">BLIP</span>
+              <span class="tag">InsightFace</span>
+              <span class="tag">FAISS</span>
+              <span class="tag">HDBSCAN</span>
+              <span class="tag">SQLite</span>
+            </div>
+          </div>
+          <div class="project-side">
+            <p class="project-meta">Public · 2025</p>
+            <a href="https://github.com/dalhaqq/photo-ai" target="_blank" rel="noopener" class="project-link">
+              github.com/dalhaqq/photo-ai ↗
+            </a>
+          </div>
+        </div>
+
+        <div class="project-item reveal">
+          <div>
+            <h3 class="project-name">course-compass</h3>
+            <p class="project-desc">
+              Udemy course recommender — undergraduate thesis project. Users select a learning roadmap, mark skills they already know, and receive personalized course recommendations via hybrid Reciprocal Rank Fusion: combining pgvector semantic similarity search with PostgreSQL full-text search (tsvector/tsquery) for more accurate results than either method alone.
+            </p>
+            <div class="tag-row" style="margin-top: 16px;">
+              <span class="tag">Next.js 15</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">PostgreSQL</span>
+              <span class="tag">pgvector</span>
+              <span class="tag">TypeORM</span>
+              <span class="tag">Clerk</span>
+              <span class="tag">Cypress</span>
+              <span class="tag">shadcn/ui</span>
+            </div>
+          </div>
+          <div class="project-side">
+            <p class="project-meta">Thesis · 2025</p>
+            <a href="https://github.com/dalhaqq/course-compass" target="_blank" rel="noopener" class="project-link">
+              github.com/dalhaqq ↗
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SKILLS ────────────────────────────────────────────── -->
+<section id="skills">
+  <div class="container">
+    <div class="section-inner">
+      <div class="section-label reveal">
+        <span class="section-num">04</span>
+        <h2 class="section-title">Skills</h2>
+      </div>
+      <div class="skills-grid reveal">
+        <div>
+          <p class="skill-label">Backend</p>
+          <p class="skill-items">
+            Node.js (Express, Fastify)<br>
+            Go (Golang)<br>
+            PHP (Laravel)<br>
+            Python
+          </p>
+        </div>
+        <div>
+          <p class="skill-label">Database</p>
+          <p class="skill-items">
+            PostgreSQL (pgvector, FTS)<br>
+            MySQL · Redis<br>
+            TypeORM · Sequelize
+          </p>
+        </div>
+        <div>
+          <p class="skill-label">Testing</p>
+          <p class="skill-items">
+            Jest<br>
+            Katalon · Selenium<br>
+            Maestro · Cypress
+          </p>
+        </div>
+        <div>
+          <p class="skill-label">Integrations</p>
+          <p class="skill-items">
+            Shopee API<br>
+            TikTok Live API<br>
+            WhatsApp API<br>
+            S3-compatible storage<br>
+            Odoo ERP
+          </p>
+        </div>
+        <div>
+          <p class="skill-label">Tools</p>
+          <p class="skill-items">
+            Docker · Git<br>
+            REST · Linux
+          </p>
+        </div>
+        <div>
+          <p class="skill-label">Frontend</p>
+          <p class="skill-items">
+            Next.js · TypeScript<br>
+            Tailwind CSS · React
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ───────────────────────────────────────────── -->
+<section id="contact">
+  <div class="container">
+    <div class="section-inner">
+      <div class="section-label reveal">
+        <span class="section-num">05</span>
+        <h2 class="section-title">Contact</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="reveal">
+          <h2 class="contact-heading">
+            Let's<br><em>build</em><br>something.
+          </h2>
+          <p class="contact-sub">
+            Open to freelance backend projects and full-time opportunities.
+            Especially interested in API development, marketplace integrations,
+            and database-intensive systems.
+          </p>
+        </div>
+        <div class="contact-links reveal reveal-delay-1">
+          <div class="contact-row">
+            <span class="contact-row-label">Email</span>
+            <a href="mailto:abdalhaqqm@gmail.com" class="contact-row-val">abdalhaqqm@gmail.com</a>
+          </div>
+          <div class="contact-row">
+            <span class="contact-row-label">WhatsApp</span>
+            <a href="https://wa.me/6285156947763" target="_blank" rel="noopener" class="contact-row-val">+62 851-5694-7763</a>
+          </div>
+          <div class="contact-row">
+            <span class="contact-row-label">LinkedIn</span>
+            <a href="https://linkedin.com/in/abdalhaqq" target="_blank" rel="noopener" class="contact-row-val">linkedin.com/in/abdalhaqq</a>
+          </div>
+          <div class="contact-row">
+            <span class="contact-row-label">GitHub</span>
+            <a href="https://github.com/dalhaqq" target="_blank" rel="noopener" class="contact-row-val">github.com/dalhaqq</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <footer>
+    <span class="footer-copy">© 2026 Abdalhaqq Muhammad Saih</span>
+    <span class="footer-copy">Jakarta, Indonesia</span>
+  </footer>
+</div>
+
+<script>
+  // Nav shadow on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 24);
+  }, { passive: true });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+
+  revealEls.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
