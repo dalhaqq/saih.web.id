@@ -241,8 +241,7 @@
     /* ─── ABOUT ───────────────────────────────────────────── */
     .about-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(48px, 7vw, 100px);
+      grid-template-columns: 1fr;
     }
 
     .about-body p {
@@ -292,7 +291,6 @@
       padding: 36px 0;
       border-top: 1px solid var(--rule);
     }
-    .exp-item:last-child { border-bottom: 1px solid var(--rule); }
 
     .exp-meta {
       padding-top: 3px;
@@ -389,7 +387,6 @@
       border-top: 1px solid var(--rule);
       align-items: start;
     }
-    .project-item:last-child { border-bottom: 1px solid var(--rule); }
 
     .project-name {
       font-family: 'Playfair Display', serif;
@@ -464,13 +461,19 @@
       font-family: 'Playfair Display', serif;
       font-size: clamp(42px, 7vw, 84px);
       font-weight: 900;
-      line-height: 0.94;
+      line-height: 1;
       letter-spacing: -0.025em;
+      display: flex;
+      flex-direction: column;
+      gap: 0.02em;
     }
 
     .contact-heading em {
       font-style: italic;
       color: var(--accent);
+    }
+    .contact-heading span:last-child {
+      margin-top: -0.20em;
     }
 
     .contact-sub {
@@ -546,6 +549,23 @@
     .reveal-delay-2 { transition-delay: 0.16s; }
     .reveal-delay-3 { transition-delay: 0.24s; }
 
+    /* ─── EXP ACCORDION ───────────────────────────────────── */
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .exp-toggle-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ink-muted);
+      padding: 4px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
     /* ─── RESPONSIVE ──────────────────────────────────────── */
     @media (max-width: 860px) {
       .hero-inner {
@@ -577,12 +597,29 @@
         grid-template-columns: 1fr;
         gap: 20px;
       }
+      .exp-toggle-btn { display: flex; }
+      .exp-collapsible {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+      }
+      .exp-item.is-open .exp-collapsible {
+        max-height: 800px;
+      }
+      .exp-toggle-btn svg {
+        transition: transform 0.3s ease;
+      }
+      .exp-item.is-open .exp-toggle-btn svg {
+        transform: rotate(180deg);
+      }
     }
 
     @media (max-width: 580px) {
       .nav-links { display: none; }
       .hero-name { letter-spacing: -0.03em; }
     }
+
+    .exp-toggle-btn:hover { color: var(--ink); }
   </style>
 </head>
 <body>
@@ -619,7 +656,6 @@
         <span class="badge-avail">
           <span class="badge-dot"></span>Open to freelance
         </span>
-        <p class="hero-location">South Jakarta<br>Indonesia</p>
         <div class="hero-actions">
           <a href="#contact" class="btn btn-fill">Get in touch</a>
           <a href="https://github.com/dalhaqq" target="_blank" rel="noopener" class="btn btn-outline">GitHub ↗</a>
@@ -658,24 +694,6 @@
             database-heavy systems.
           </p>
         </div>
-        <div class="differentiators reveal reveal-delay-1">
-          <div class="diff-item">
-            <p class="diff-label">Marketplace APIs</p>
-            <p class="diff-text">Production experience integrating Shopee and TikTok Live APIs — uncommon in the Indonesian backend market.</p>
-          </div>
-          <div class="diff-item">
-            <p class="diff-label">QA Background</p>
-            <p class="diff-text">A year as a QA engineer means I write backend code with testability and reliability built in, not bolted on.</p>
-          </div>
-          <div class="diff-item">
-            <p class="diff-label">Production Scale</p>
-            <p class="diff-text">Systems I've shipped have served 20,000+ users across Paragon's 13+ brand portfolio.</p>
-          </div>
-          <div class="diff-item">
-            <p class="diff-label">Hybrid Search</p>
-            <p class="diff-text">Hands-on with pgvector and full-text search combined via Reciprocal Rank Fusion — thesis project and live implementation.</p>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -697,26 +715,35 @@
             <p class="exp-type-tag">Contract</p>
           </div>
           <div>
-            <h3 class="exp-company">ParagonCorp</h3>
-            <p class="exp-role">Backend Developer · via PT Flitts Magista Indonesia</p>
-            <p class="exp-desc">
-              Building Siglive — an internal live commerce management system serving 13+ Paragon beauty brands on TikTok and Shopee. Handles host attendance, live session monitoring, host assistance, and promotional stock tracking across all brands.
-            </p>
-            <div class="exp-bullets">
-              <span class="exp-bullet">REST APIs using Node.js (Express) + PostgreSQL (Sequelize) for live session and host management</span>
-              <span class="exp-bullet">Shopee livestream integration for real-time comment monitoring during live sessions</span>
-              <span class="exp-bullet">Refactored Jest suite across 6+ modules — decomposed a 931-line monolith into focused, maintainable specs</span>
-              <span class="exp-bullet">Added test coverage for previously untested services: webSocket, brandSummary, hostSummaryV3</span>
+            <div class="exp-header">
+              <div>
+                <h3 class="exp-company">ParagonCorp</h3>
+                <p class="exp-role">Backend Developer · via PT Flitts Magista Indonesia</p>
+              </div>
+              <button class="exp-toggle-btn" aria-label="Toggle description">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
             </div>
-            <div class="tag-row">
-              <span class="tag">Node.js</span>
-              <span class="tag">Express</span>
-              <span class="tag">PostgreSQL</span>
-              <span class="tag">Sequelize</span>
-              <span class="tag">Jest</span>
-              <span class="tag">TypeScript</span>
-              <span class="tag">Shopee API</span>
-              <span class="tag">TikTok API</span>
+            <div class="exp-collapsible">
+              <p class="exp-desc">
+                Building Siglive — an internal live commerce management system serving 13+ Paragon beauty brands on TikTok and Shopee. Handles host attendance, live session monitoring, host assistance, and promotional stock tracking across all brands.
+              </p>
+              <div class="exp-bullets">
+                <span class="exp-bullet">REST APIs using Node.js (Express) + PostgreSQL (Sequelize) for live session and host management</span>
+                <span class="exp-bullet">Shopee livestream integration for real-time comment monitoring during live sessions</span>
+                <span class="exp-bullet">Refactored Jest suite across 6+ modules — decomposed a 931-line monolith into focused, maintainable specs</span>
+                <span class="exp-bullet">Added test coverage for previously untested services: webSocket, brandSummary, hostSummaryV3</span>
+              </div>
+              <div class="tag-row">
+                <span class="tag">Node.js</span>
+                <span class="tag">Express</span>
+                <span class="tag">PostgreSQL</span>
+                <span class="tag">Sequelize</span>
+                <span class="tag">Jest</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">Shopee API</span>
+                <span class="tag">TikTok API</span>
+              </div>
             </div>
           </div>
         </div>
@@ -727,23 +754,32 @@
             <p class="exp-type-tag">Contract · 1 yr 7 mos</p>
           </div>
           <div>
-            <h3 class="exp-company">KeDA Tech</h3>
-            <p class="exp-role">Quality Assurance Engineer</p>
-            <p class="exp-desc">
-              QA engineer across two enterprise Odoo ERP implementations. Sumber Harapan Nusakencana (Toyota dealership) and Citra Kreasi Makmur (Tefal &amp; Turbo distributor), where the work involved a SAP-to-Odoo migration. Built automated test tooling from scratch on both projects.
-            </p>
-            <div class="exp-bullets">
-              <span class="exp-bullet">Toyota dealership: tested 7+ Odoo modules, built UAT tool that reads Excel test cases and auto-organizes screenshots</span>
-              <span class="exp-bullet">CKM: built web comparison tool to detect discrepancies between SAP and Odoo report output</span>
-              <span class="exp-bullet">CKM: initiated Maestro mobile automation for field sales app — login, supervisor takeover, sales reports</span>
-              <span class="exp-bullet">Added Selenium web automation alongside mobile coverage</span>
+            <div class="exp-header">
+              <div>
+                <h3 class="exp-company">KeDA Tech</h3>
+                <p class="exp-role">Quality Assurance Engineer</p>
+              </div>
+              <button class="exp-toggle-btn" aria-label="Toggle description">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
             </div>
-            <div class="tag-row">
-              <span class="tag">Katalon</span>
-              <span class="tag">Selenium</span>
-              <span class="tag">Maestro</span>
-              <span class="tag">Odoo</span>
-              <span class="tag">Python</span>
+            <div class="exp-collapsible">
+              <p class="exp-desc">
+                QA engineer across two enterprise Odoo ERP implementations. Sumber Harapan Nusakencana (Toyota dealership) and Citra Kreasi Makmur (Tefal &amp; Turbo distributor), where the work involved a SAP-to-Odoo migration. Built automated test tooling from scratch on both projects.
+              </p>
+              <div class="exp-bullets">
+                <span class="exp-bullet">Toyota dealership: tested 7+ Odoo modules, built UAT tool that reads Excel test cases and auto-organizes screenshots</span>
+                <span class="exp-bullet">CKM: built web comparison tool to detect discrepancies between SAP and Odoo report output</span>
+                <span class="exp-bullet">CKM: initiated Maestro mobile automation for field sales app — login, supervisor takeover, sales reports</span>
+                <span class="exp-bullet">Added Selenium web automation alongside mobile coverage</span>
+              </div>
+              <div class="tag-row">
+                <span class="tag">Katalon</span>
+                <span class="tag">Selenium</span>
+                <span class="tag">Maestro</span>
+                <span class="tag">Odoo</span>
+                <span class="tag">Python</span>
+              </div>
             </div>
           </div>
         </div>
@@ -754,21 +790,30 @@
             <p class="exp-type-tag">Freelance</p>
           </div>
           <div>
-            <h3 class="exp-company">Freelance Backend</h3>
-            <p class="exp-role">Backend Developer</p>
-            <p class="exp-desc">
-              Independent backend work running in parallel with full-time roles. Two active projects: a Go-based printing service management system and a PHP/PostgreSQL REST API for a meditation mobile app.
-            </p>
-            <div class="exp-bullets">
-              <span class="exp-bullet">Printing service: order management, operator task distribution, inventory tracking — Go + PostgreSQL</span>
-              <span class="exp-bullet">Meditation app: user management, progress tracking, session handling, S3-compatible content storage — PHP + PostgreSQL</span>
+            <div class="exp-header">
+              <div>
+                <h3 class="exp-company">Freelance Backend</h3>
+                <p class="exp-role">Backend Developer</p>
+              </div>
+              <button class="exp-toggle-btn" aria-label="Toggle description">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
             </div>
-            <div class="tag-row">
-              <span class="tag">Go</span>
-              <span class="tag">PHP</span>
-              <span class="tag">PostgreSQL</span>
-              <span class="tag">REST API</span>
-              <span class="tag">S3</span>
+            <div class="exp-collapsible">
+              <p class="exp-desc">
+                Independent backend work running in parallel with full-time roles. Two active projects: a Go-based printing service management system and a PHP/PostgreSQL REST API for a meditation mobile app.
+              </p>
+              <div class="exp-bullets">
+                <span class="exp-bullet">Printing service: order management, operator task distribution, inventory tracking — Go + PostgreSQL</span>
+                <span class="exp-bullet">Meditation app: user management, progress tracking, session handling, S3-compatible content storage — PHP + PostgreSQL</span>
+              </div>
+              <div class="tag-row">
+                <span class="tag">Go</span>
+                <span class="tag">PHP</span>
+                <span class="tag">PostgreSQL</span>
+                <span class="tag">REST API</span>
+                <span class="tag">S3</span>
+              </div>
             </div>
           </div>
         </div>
@@ -779,20 +824,29 @@
             <p class="exp-type-tag">Contract · Remote</p>
           </div>
           <div>
-            <h3 class="exp-company">PT Cybers Blitz Nusantara</h3>
-            <p class="exp-role">Software Engineer</p>
-            <p class="exp-desc">
-              Built and maintained web applications serving 20,000+ users using PHP and PostgreSQL. Notable achievement: reduced Excel export from 30+ seconds to under 1 second by bypassing library overhead and generating XLSX XML directly.
-            </p>
-            <div class="exp-bullets">
-              <span class="exp-bullet">30s → &lt;1s Excel export via direct XML generation — no library overhead</span>
-              <span class="exp-bullet">Complex relational DB design for peer-to-peer employee appraisal workflows</span>
-              <span class="exp-bullet">Business trip management system with automated multi-step approval workflows</span>
+            <div class="exp-header">
+              <div>
+                <h3 class="exp-company">PT Cybers Blitz Nusantara</h3>
+                <p class="exp-role">Software Engineer</p>
+              </div>
+              <button class="exp-toggle-btn" aria-label="Toggle description">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
             </div>
-            <div class="tag-row">
-              <span class="tag">PHP</span>
-              <span class="tag">PostgreSQL</span>
-              <span class="tag">MySQL</span>
+            <div class="exp-collapsible">
+              <p class="exp-desc">
+                Built and maintained web applications serving 20,000+ users using PHP and PostgreSQL. Notable achievement: reduced Excel export from 30+ seconds to under 1 second by bypassing library overhead and generating XLSX XML directly.
+              </p>
+              <div class="exp-bullets">
+                <span class="exp-bullet">30s → &lt;1s Excel export via direct XML generation — no library overhead</span>
+                <span class="exp-bullet">Complex relational DB design for peer-to-peer employee appraisal workflows</span>
+                <span class="exp-bullet">Business trip management system with automated multi-step approval workflows</span>
+              </div>
+              <div class="tag-row">
+                <span class="tag">PHP</span>
+                <span class="tag">PostgreSQL</span>
+                <span class="tag">MySQL</span>
+              </div>
             </div>
           </div>
         </div>
@@ -803,24 +857,33 @@
             <p class="exp-type-tag">Freelance · 11 mos</p>
           </div>
           <div>
-            <h3 class="exp-company">Freelance Programmer</h3>
-            <p class="exp-role">Full-stack & Mobile Developer</p>
-            <p class="exp-desc">
-              Built and deployed 10+ web and mobile applications. Clients included a regional government office (financial reporting) and various SMEs. Delivered cross-platform mobile apps and a C++ puzzle game in one week.
-            </p>
-            <div class="exp-bullets">
-              <span class="exp-bullet">Financial reporting system for regional government — real-time budget tracking and multi-level approval</span>
-              <span class="exp-bullet">Cross-platform mobile apps using Flutter, Ionic, and Jetpack Compose</span>
-              <span class="exp-bullet">C++ puzzle game using Sigil library — delivered within one week</span>
+            <div class="exp-header">
+              <div>
+                <h3 class="exp-company">Freelance Programmer</h3>
+                <p class="exp-role">Full-stack & Mobile Developer</p>
+              </div>
+              <button class="exp-toggle-btn" aria-label="Toggle description">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
             </div>
-            <div class="tag-row">
-              <span class="tag">Laravel</span>
-              <span class="tag">Node.js</span>
-              <span class="tag">Flutter</span>
-              <span class="tag">Ionic</span>
-              <span class="tag">Jetpack Compose</span>
-              <span class="tag">MySQL</span>
-              <span class="tag">PostgreSQL</span>
+            <div class="exp-collapsible">
+              <p class="exp-desc">
+                Built and deployed 10+ web and mobile applications. Clients included a regional government office (financial reporting) and various SMEs. Delivered cross-platform mobile apps and a C++ puzzle game in one week.
+              </p>
+              <div class="exp-bullets">
+                <span class="exp-bullet">Financial reporting system for regional government — real-time budget tracking and multi-level approval</span>
+                <span class="exp-bullet">Cross-platform mobile apps using Flutter, Ionic, and Jetpack Compose</span>
+                <span class="exp-bullet">C++ puzzle game using Sigil library — delivered within one week</span>
+              </div>
+              <div class="tag-row">
+                <span class="tag">Laravel</span>
+                <span class="tag">Node.js</span>
+                <span class="tag">Flutter</span>
+                <span class="tag">Ionic</span>
+                <span class="tag">Jetpack Compose</span>
+                <span class="tag">MySQL</span>
+                <span class="tag">PostgreSQL</span>
+              </div>
             </div>
           </div>
         </div>
@@ -969,7 +1032,7 @@
       <div class="contact-grid">
         <div class="reveal">
           <h2 class="contact-heading">
-            Let's<br><em>build</em><br>something.
+            <span>Let's</span><em>build</em><span>something.</span>
           </h2>
           <p class="contact-sub">
             Open to freelance backend projects and full-time opportunities.
@@ -1026,6 +1089,14 @@
   }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
 
   revealEls.forEach(el => io.observe(el));
+
+  // Mobile exp accordion
+  document.querySelectorAll('.exp-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.exp-item');
+      item.classList.toggle('is-open');
+    });
+  });
 </script>
 </body>
 </html>
